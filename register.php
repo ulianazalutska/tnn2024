@@ -11,7 +11,6 @@
       $email = trim($_POST['email']);
       $pwd = trim($_POST['pwd']);
       $conf_pwd = trim($_POST['conf_pwd']);
-      // validate fields
       if ($name == ""){
           $name_err = "Name is mandatory";
           $error = true;
@@ -25,7 +24,7 @@
               $email_err = "Invalid Email format";
               $error = true;
           }
-      else{   // check if email already registered
+      else{  
           $sql = "select * from users where email = ?";
           $stmt = $conn->prepare($sql);
           $stmt->bind_param("s",$email);
@@ -58,7 +57,7 @@
           }
       }
   
-        // all validations passed
+
         if (!$error){
           $pwd = password_hash($pwd, PASSWORD_DEFAULT);
   
@@ -164,7 +163,7 @@
       </div>
     </div>
   </section>
-  <!-- Модальне вікно -->
+
 <div id="customModal" class="custom-modal">
   <div class="custom-modal-content">
     <span class="custom-close">&times;</span>
@@ -173,11 +172,6 @@
     </div>
   </div>
 </div>
-
-<!-- Скрипти -->
-<script>
-// Додаємо ваш JS код тут
-</script>
 
 
   <script>

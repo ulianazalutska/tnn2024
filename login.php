@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "cfg/conn.php"; // Файл для підключення до бази даних
+include "cfg/conn.php"; 
 $email = $pwd = "";
 $email_err = $pwd_err = "";
 $error = false; 
@@ -10,10 +10,10 @@ if (isset($_POST['submit'])){
     $email = trim($_POST['email']);
     $pwd = trim($_POST['pwd']);
 
-    // Перевірка, чи вибрано "Remember me"
+
     $remember = isset($_POST['remember']) ? $_POST['remember'] : null;
 
-    // Валідація полів
+   
     if ($email == ""){
         $email_err = "Email is mandatory";
         $error = true;
@@ -24,7 +24,7 @@ if (isset($_POST['submit'])){
         $error = true;
     }
 
-    // Якщо немає помилок, перевіряємо користувача в базі даних
+    
     if (!$error){
         $sql = "SELECT * FROM users WHERE email = ?";
         try {
@@ -37,33 +37,33 @@ if (isset($_POST['submit'])){
                 $row = $result->fetch_assoc();
                 $stored_pwd = $row['password'];
 
-                // Перевірка пароля
+                
                 if (password_verify($pwd, $stored_pwd)) {
-                    // Логін успішний
+                    
                     if ($remember) {
-                        // Якщо "Remember me" вибрано, встановлюємо кукі
+                        
                         setcookie("remember_email", $email, time() + 365 * 24 * 3600);
                         setcookie("remember", $remember, time() + 365 * 24 * 3600);
                     } else {
-                        // Якщо "Remember me" не вибрано, видаляємо кукі
+                       
                         setcookie("remember_email", "", time() - 3600);
                         setcookie("remember", "", time() - 3600);
                     }
 
-                    // Зберігаємо дані користувача в сесію
-                    $_SESSION['user_id'] = $row['id'];  // Додаємо user_id в сесію
+                   
+                    $_SESSION['user_id'] = $row['id'];  
                     $_SESSION['name'] = $row['name'];
                     $_SESSION['email'] = $row['email'];
 
-                    // Перенаправляємо користувача на головну сторінку або профіль
+                    
                     header("location: index.php");
                     exit();
                 } else {
-                    // Неправильний пароль
+                    
                     $error_msg = "Incorrect password.";
                 }
             } else {
-                // Користувач не знайдений
+                
                 $error_msg = "Email not registered.";
             }
         } catch (Exception $e) {
